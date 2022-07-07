@@ -32,7 +32,7 @@ classdef FBFest < handle
             
             % k-space window
             k_max = 1./(2.*obj.image_res);
-            interval  = (2 * k_max + 1) ./ (2 * obj.matrix);
+            interval  = 2 * k_max ./ obj.matrix;
             
             % define k-space grid
             [kx,ky,kz] = ndgrid(-k_max(1):interval(1):k_max(1) - interval(1),-k_max(2):interval(2):k_max(2) - interval(2),-k_max(3):interval(3):k_max(3) - interval(3));
@@ -55,7 +55,7 @@ classdef FBFest < handle
             % susceptibility is equal to the susceptibility on the origin
             % corner of the matrix.
             dBzFFT = (k_scaling_coeff - 1/3).*FT_chi;
-            dBzFFT(k == 0) = obj.b0 * obj.sus(1, 1, 1) * prod(dim) / 3;
+            dBzFFT(k == 0) = obj.b0 * obj.sus(1, 1, 1) * prod(obj.matrix) / 3;
             
             % compute Bdz (the z-component of the magnetic field due to a
             % sphere, relative to B0)
